@@ -1,4 +1,5 @@
 import { request } from 'undici';
+import path from 'node:path';
 import { URLs, SearchParamType, SearchParamWhere, ParamSeq, ParamSort } from './data';
 import { TorrentsPageParser, TorrenDetailParser, RssParser, ActivityParser, RecommendedParser } from './parser';
 import { Size } from './util';
@@ -180,11 +181,11 @@ export class Client {
             throw new Error(`Error while downloading torrent. Url: '${url}'. ${e}`);
         }
     }
-    _prepareDownload(torrent, path) {
+    _prepareDownload(torrent, outDir) {
         const title = String(torrent.get('title'));
         const filename = title.replace(/\s+/g, '_') + '.torrent';
         const url = String(torrent.get('download'));
-        const filePath = require('path').join(path, filename);
+        const filePath = path.join(outDir, filename);
         return [filePath, url];
     }
     async logout() {

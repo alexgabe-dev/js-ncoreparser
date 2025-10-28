@@ -1,4 +1,5 @@
 import { request } from 'undici';
+import path from 'node:path';
 import { URLs, SearchParamType, SearchParamWhere, ParamSeq, ParamSort } from './data';
 import { TorrentsPageParser, TorrenDetailParser, RssParser, ActivityParser, RecommendedParser } from './parser';
 import { Size } from './util';
@@ -194,11 +195,11 @@ export class Client {
     }
   }
 
-  private _prepareDownload(torrent: Torrent, path: string): [string, string] {
+  private _prepareDownload(torrent: Torrent, outDir: string): [string, string] {
     const title = String(torrent.get('title'));
     const filename = title.replace(/\s+/g, '_') + '.torrent';
     const url = String(torrent.get('download'));
-    const filePath = require('path').join(path, filename);
+    const filePath = path.join(outDir, filename);
     return [filePath, url];
   }
 
